@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Smart Wheelchair Control Interface</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Module -->
+    <header class="header-card">
+      <div class="brand">
+        <span class="badge">E&TC PROJECT 2026</span>
+        <h1>Smart Wheelchair</h1>
+        <p class="subtext">Late G. N. Sapkal College of Engineering</p>
+      </div>
+      <div class="connection-status" id="connStatusBox">
+        <span class="status-indicator" id="statusDot"></span>
+        <span class="status-label" id="statusLabel">DISCONNECTED</span>
+      </div>
+    </header>
+
+    <!-- Bluetooth Control Bar -->
+    <section class="action-bar">
+      <button id="btnConnect" class="btn btn-primary">
+        <span class="btn-icon">⚡</span>
+        <span id="btnConnectText">Connect ESP32 (BLE)</span>
+      </button>
+      <button id="btnToggleVoice" class="btn btn-secondary" disabled>
+        <span class="btn-icon" id="micIcon">🎙️</span>
+        <span id="btnVoiceText">Start Continuous Mic</span>
+      </button>
+    </section>
+
+    <!-- Main Grid Dashboard (Square / Minimalist Modules) -->
+    <main class="dashboard-grid">
+      <!-- Module 1: Live Voice Recognition & Transcript -->
+      <section class="card voice-module">
+        <div class="card-header">
+          <h2>Voice Processing</h2>
+          <span class="mode-tag" id="listeningTag">MIC IDLE</span>
+        </div>
+        
+        <div class="transcript-display">
+          <div class="label">LIVE SPEECH TRANSCRIPT</div>
+          <div class="transcript-text" id="liveTranscript">Waiting for speech...</div>
+        </div>
+
+        <div class="parsed-command-box">
+          <div class="label">LAST DETECTED COMMAND</div>
+          <div class="command-token" id="lastCommandToken">NONE</div>
+        </div>
+
+        <div class="voice-controls-row">
+          <label class="toggle-control">
+            <input type="checkbox" id="chkContinuous" checked>
+            <span class="checkbox-box"></span>
+            <span class="toggle-text">Continuous Listening</span>
+          </label>
+          <label class="toggle-control">
+            <input type="checkbox" id="chkWakeWord">
+            <span class="checkbox-box"></span>
+            <span class="toggle-text">Require Wake Word ("Chair ...")</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Module 2: Vehicle Motion State -->
+      <section class="card state-module">
+        <div class="card-header">
+          <h2>Motion State</h2>
+          <span class="tag-outline" id="speedTag">SPEED: SLOW</span>
+        </div>
+
+        <div class="direction-indicator-grid">
+          <div class="dir-cell empty"></div>
+          <div class="dir-cell" id="dirFWD">FORWARD</div>
+          <div class="dir-cell empty"></div>
+          <div class="dir-cell" id="dirLFT">LEFT</div>
+          <div class="dir-cell active" id="dirSTP">STOPPED</div>
+          <div class="dir-cell" id="dirRGT">RIGHT</div>
+          <div class="dir-cell empty"></div>
+          <div class="dir-cell" id="dirREV">BACKWARD</div>
+          <div class="dir-cell empty"></div>
+        </div>
+
+        <div class="system-meta-row">
+          <div class="meta-item">
+            <span class="meta-label">Headlights</span>
+            <span class="meta-value" id="valHeadlights">OFF</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Speed Level</span>
+            <span class="meta-value" id="valSpeedDuty">45% (SLOW)</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Telemetry</span>
+            <span class="meta-value" id="valTelemetry">ONLINE</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Module 3: Manual Touch Fallback Controls -->
+      <section class="card manual-module">
+        <div class="card-header">
+          <h2>Manual Override</h2>
+          <span class="sub-header-text">Touch / Test Controls</span>
+        </div>
+
+        <div class="manual-pad">
+          <div class="pad-row">
+            <button class="pad-btn" data-cmd="FWD">▲ FWD</button>
+          </div>
+          <div class="pad-row">
+            <button class="pad-btn" data-cmd="LFT">◀ LEFT</button>
+            <button class="pad-btn pad-btn-stop" data-cmd="STP">■ STOP</button>
+            <button class="pad-btn" data-cmd="RGT">RIGHT ▶</button>
+          </div>
+          <div class="pad-row">
+            <button class="pad-btn" data-cmd="REV">▼ BACK</button>
+          </div>
+        </div>
+
+        <div class="action-toggles">
+          <button class="btn btn-outline" id="btnToggleSpeed">Toggle Speed (Slow/Fast)</button>
+          <button class="btn btn-outline" id="btnToggleLights">Toggle Lights (ON/OFF)</button>
+        </div>
+      </section>
+
+      <!-- Module 4: Emergency Stop & Safety Status -->
+      <section class="card emergency-module">
+        <div class="card-header">
+          <h2>Emergency Safety</h2>
+          <span class="hazard-tag">FAIL-SAFE</span>
+        </div>
+
+        <button id="btnEmergencyStop" class="btn-estop">
+          <span class="estop-icon">🛑</span>
+          <span class="estop-title">EMERGENCY STOP</span>
+          <span class="estop-sub">IMMEDIATE MOTOR CUTOFF</span>
+        </button>
+
+        <div class="safety-checklist">
+          <div class="check-item"><span class="check-icon">✓</span> Ultrasonic Obstacle Interlock (<25cm)</div>
+          <div class="check-item"><span class="check-icon">✓</span> IR Downward Cliff Protection</div>
+          <div class="check-item"><span class="check-icon">✓</span> Hardware STBY Pin Link</div>
+        </div>
+      </section>
+
+      <!-- Module 5: Activity & Serial Event Log -->
+      <section class="card log-module">
+        <div class="card-header">
+          <h2>Event Monitor</h2>
+          <button class="btn-text" id="btnClearLog">Clear Log</button>
+        </div>
+        <div class="terminal-log" id="logContainer">
+          <div class="log-line info">[SYS] System initialized in standby mode.</div>
+          <div class="log-line info">[SYS] Web Speech API loaded. Ready for BLE connection.</div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>Project By: Pranjal Sapkal, Purva Kothawade, Premal Bachhav</span>
+      <span>Guide: Prof. S. K. Khaire</span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

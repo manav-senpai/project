@@ -1,0 +1,600 @@
+/* ==========================================================================
+   Smart Voice-Controlled Wheelchair
+   Clean Minimalist Cream & Bone-White Industrial Theme
+   ========================================================================== */
+
+:root {
+  --bg-main: #F7F5F0;
+  --bg-card: #FFFFFF;
+  --bg-subtle: #EFECE6;
+  --bg-input: #FAF8F5;
+  
+  --border-color: #DCD6CD;
+  --border-dark: #262422;
+  
+  --text-primary: #1C1A18;
+  --text-secondary: #65605B;
+  --text-muted: #8E8880;
+  
+  --accent-active: #2B2927;
+  --accent-highlight: #4B463F;
+  --danger-red: #B91C1C;
+  --danger-bg: #FEF2F2;
+  --danger-border: #F87171;
+  --success-green: #15803D;
+  
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Consolas", "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.app-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ==========================================================================
+   Header Module
+   ========================================================================== */
+
+.header-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.brand .badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  padding: 2px 6px;
+  margin-bottom: 4px;
+}
+
+.brand h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--text-primary);
+}
+
+.brand .subtext {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+}
+
+.status-indicator {
+  width: 9px;
+  height: 9px;
+  background-color: var(--text-muted);
+  display: inline-block;
+}
+
+.status-indicator.connected {
+  background-color: var(--success-green);
+}
+
+.status-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   Action Bar
+   ========================================================================== */
+
+.action-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .action-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+.btn {
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 0;
+  border: 1px solid var(--border-dark);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-primary {
+  background-color: var(--text-primary);
+  color: #FFFFFF;
+  border-color: var(--text-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #33312E;
+}
+
+.btn-secondary {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--bg-subtle);
+}
+
+.btn-secondary.listening {
+  background-color: #FEF3C7;
+  border-color: #D97706;
+  color: #92400E;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Dashboard Grid
+   ========================================================================== */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.card-header h2 {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
+}
+
+.mode-tag, .tag-outline {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-subtle);
+  color: var(--text-secondary);
+}
+
+.mode-tag.active {
+  background-color: #FEF3C7;
+  border-color: #D97706;
+  color: #B45309;
+}
+
+/* ==========================================================================
+   Voice Processing Module
+   ========================================================================== */
+
+.transcript-display {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  min-height: 70px;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.transcript-text {
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.parsed-command-box {
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  padding: 12px;
+}
+
+.command-token {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.voice-controls-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+  padding-top: 4px;
+}
+
+.toggle-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-control input {
+  display: none;
+}
+
+.checkbox-box {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--border-dark);
+  background-color: #FFFFFF;
+  display: inline-block;
+  position: relative;
+}
+
+.toggle-control input:checked + .checkbox-box {
+  background-color: var(--text-primary);
+}
+
+.toggle-control input:checked + .checkbox-box::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background-color: #FFFFFF;
+}
+
+/* ==========================================================================
+   Motion State Module
+   ========================================================================== */
+
+.direction-indicator-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  background-color: var(--bg-subtle);
+  padding: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.dir-cell {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 12px 6px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.dir-cell.empty {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.dir-cell.active {
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+  color: #FFFFFF;
+}
+
+.system-meta-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 10px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.meta-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   Manual Touch Override Module
+   ========================================================================== */
+
+.sub-header-text {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.manual-pad {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.pad-row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  justify-content: center;
+}
+
+.pad-btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 14px 18px;
+  flex: 1;
+  max-width: 110px;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.1s;
+}
+
+.pad-btn:active {
+  background-color: var(--text-primary);
+  color: #FFFFFF;
+}
+
+.pad-btn-stop {
+  background-color: #FEF2F2;
+  border-color: #F87171;
+  color: var(--danger-red);
+}
+
+.pad-btn-stop:active {
+  background-color: var(--danger-red);
+  color: #FFFFFF;
+}
+
+.action-toggles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.btn-outline {
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.btn-outline:active {
+  background-color: var(--bg-subtle);
+}
+
+/* ==========================================================================
+   Emergency Safety Module
+   ========================================================================== */
+
+.hazard-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  background-color: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: var(--danger-red);
+}
+
+.btn-estop {
+  background-color: var(--danger-red);
+  color: #FFFFFF;
+  border: 2px solid #7F1D1D;
+  padding: 18px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: opacity 0.15s ease;
+}
+
+.btn-estop:active {
+  opacity: 0.85;
+}
+
+.estop-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.estop-title {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.estop-sub {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+}
+
+.safety-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-color);
+  padding-top: 8px;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.check-icon {
+  color: var(--success-green);
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   Activity & Serial Log Module
+   ========================================================================== */
+
+.log-module {
+  grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+  .log-module {
+    grid-column: span 1;
+  }
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  font-size: 11px;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.terminal-log {
+  background-color: #171615;
+  color: #E6E4DF;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 12px;
+  border: 1px solid var(--border-dark);
+  height: 140px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.log-line.tx {
+  color: #93C5FD;
+}
+
+.log-line.rx {
+  color: #86EFAC;
+}
+
+.log-line.warn {
+  color: #FDE047;
+}
+
+.log-line.danger {
+  color: #FCA5A5;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.app-footer {
+  border-top: 1px solid var(--border-color);
+  padding: 12px 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
